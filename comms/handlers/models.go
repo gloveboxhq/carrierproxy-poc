@@ -15,8 +15,7 @@ type AddPolicyDriverReq struct {
 }
 
 type AddPolicyAddressReq struct {
-	EmailTo string `json:"email_to"`
-
+	EmailTo string          `json:"email_to"`
 	Message json.RawMessage `json:"message"`
 }
 

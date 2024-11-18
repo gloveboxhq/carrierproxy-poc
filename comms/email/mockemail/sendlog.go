@@ -7,17 +7,17 @@ import (
 )
 
 type SendLog struct {
-	to      string
-	cc      string
+	to      []string
+	cc      []string
 	tplID   email.TplID
 	message json.RawMessage
 }
 
-func (sl *SendLog) ExtractTo() string {
+func (sl *SendLog) ExtractTos() []string {
 	return sl.to
 }
 
-func (sl *SendLog) ExtractCc() string {
+func (sl *SendLog) ExtractCcs() []string {
 	return sl.cc
 }
 
@@ -32,10 +32,7 @@ func (sl *SendLog) ExtractMessage() json.RawMessage {
 type SendLogs []SendLog
 
 func (s SendLogs) IsEmpty() bool {
-	if len(s) == 0 {
-		return true
-	}
-	return false
+	return len(s) == 0
 }
 
 // Last will return the last created log

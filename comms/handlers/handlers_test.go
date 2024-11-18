@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"slices"
 	"testing"
 
 	"github.com/gloveboxhq/glovebox-go-code-challenge/comms/email"
@@ -70,8 +71,8 @@ func TestAddPolicyVehicle(t *testing.T) {
 
 				lastEmail := testEmail.SendLogs().Last()
 
-				if lastEmail.ExtractTo() != tc.payload.EmailTo {
-					t.Fatalf("expected to %v but got %v", tc.payload.EmailTo, lastEmail.ExtractTo())
+				if lastEmail.ExtractTos()[0] != tc.payload.EmailTo {
+					t.Fatalf("expected to %v but got %v", tc.payload.EmailTo, lastEmail.ExtractTos())
 				}
 
 				if string(lastEmail.ExtractMessage()) != string(tc.payload.Message) {
@@ -148,8 +149,8 @@ func TestAddPolicyDriver(t *testing.T) {
 
 				lastEmail := testEmail.SendLogs().Last()
 
-				if lastEmail.ExtractTo() != tc.payload.EmailTo {
-					t.Fatalf("expected to %v but got %v", tc.payload.EmailTo, lastEmail.ExtractTo())
+				if lastEmail.ExtractTos()[0] != tc.payload.EmailTo {
+					t.Fatalf("expected to %v but got %v", tc.payload.EmailTo, lastEmail.ExtractTos())
 				}
 
 				if string(lastEmail.ExtractMessage()) != string(tc.payload.Message) {
@@ -226,8 +227,8 @@ func TestAddPolicyAddress(t *testing.T) {
 
 				lastEmail := testEmail.SendLogs().Last()
 
-				if lastEmail.ExtractTo() != tc.payload.EmailTo {
-					t.Fatalf("expected to %v but got %v", tc.payload.EmailTo, lastEmail.ExtractTo())
+				if lastEmail.ExtractTos()[0] != tc.payload.EmailTo {
+					t.Fatalf("expected to %v but got %v", tc.payload.EmailTo, lastEmail.ExtractTos())
 				}
 
 				if string(lastEmail.ExtractMessage()) != string(tc.payload.Message) {
@@ -305,12 +306,12 @@ func TestAddPolicyCoverage(t *testing.T) {
 
 				lastEmail := testEmail.SendLogs().Last()
 
-				if lastEmail.ExtractTo() != tc.payload.EmailTo {
-					t.Fatalf("expected to %v but got %v", tc.payload.EmailTo, lastEmail.ExtractTo())
+				if !slices.Equal(lastEmail.ExtractTos(), []string{tc.payload.EmailTo}) {
+					t.Fatalf("expected %v but got %v", lastEmail.ExtractTos(), tc.payload.EmailTo)
 				}
 
-				if lastEmail.ExtractCc() != tc.payload.EmailCc {
-					t.Fatalf("expected cc %v but got %v", tc.payload.EmailTo, lastEmail.ExtractTo())
+				if !slices.Equal(lastEmail.ExtractCcs(), []string{tc.payload.EmailCc}) {
+					t.Fatalf("expected %v but got %v", lastEmail.ExtractCcs(), tc.payload.EmailCc)
 				}
 
 				if string(lastEmail.ExtractMessage()) != string(tc.payload.Message) {

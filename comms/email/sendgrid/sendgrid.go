@@ -31,7 +31,6 @@ type Client struct {
 }
 
 func (c *Client) Send(to []string, cc []string, message json.RawMessage, tpl email.TplID) error {
-
 	// create personalization
 	p := mail.NewPersonalization().
 		AddTos(to...).
